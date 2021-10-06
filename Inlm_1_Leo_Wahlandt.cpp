@@ -1,6 +1,3 @@
-// Inlm_1_Leo_Wahlandt.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <ctime>
 #include <regex>
@@ -9,22 +6,20 @@ using namespace std;
 
 int main()
 {
+	//Declaring as many variables in the start to improve readability
 	int balance;
 	int bet{};
-
-	//
-	bool wish2Continue = true;
-	bool diceGame = true;
 	int bestHumanDice;
 	int bestComputerDice;
 	int humanGameScore{};
 	int computerGameScore{};
-
 	int totalWinnings = 0;
-
+	char addYesNo;
+	char rematch;
+	bool wish2Continue = true;
+	bool diceGame = true;
 	bool invalidInput = false;
 	bool closeGame = true;
-
 	//Betting loop is how much you want to insert in a loop. If you dont have enough money and dont want to insert more it quits.
 	bool betting = true;
 
@@ -37,8 +32,6 @@ int main()
 
 		//This wish2Continue is set to true if the player want to play again but dont have enough money and have to insert more.
 		wish2Continue = true;
-
-
 
 		if (balance < 0 || balance > 5001) {
 			cout << "Invalid amount";
@@ -147,7 +140,7 @@ int main()
 				}
 				cout << "The score is now for human: " << score << " The computer score: " << computerScore << endl << endl;
 
-				//If the user win 2 rounds the balance will add 2x the bet. If the user loses the user loses the bet,
+				//If the user wins 2 rounds the balance will add 2x the bet. If the user loses the user loses the bet,
 				if (score == 2) {
 					balance += bet * 2;
 					totalWinnings += bet;
@@ -157,15 +150,13 @@ int main()
 				}
 				else if (computerScore == 2) {
 					totalWinnings -= bet;
-					cout << "You lost! Your new balance is: " << balance << endl;
+					cout << "Oh no! You lost! Your new balance is: " << balance << endl;
 					computerGameScore++;
 					break;
 
 				}
 			}
-			char addYesNo;
 
-			char rematch;
 
 			if (!invalidInput) {
 				cout << "-----------------------------------" << endl;
@@ -174,6 +165,7 @@ int main()
 
 				//If i put totalwinnings here it will add/remove the bet and even if i say totalwinnings +=/-= bet it will give it x2 because i put balance += (bet * 2)
 				cout << "The total winnings right now is: " << totalWinnings << endl;
+				cout << "Your current balance is: " << balance << endl;
 
 				cout << "Do you wanna play again (Y)?" << endl; cin >> rematch;
 
