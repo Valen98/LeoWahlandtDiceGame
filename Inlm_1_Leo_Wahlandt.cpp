@@ -20,7 +20,7 @@ int main()
 	bool diceGame = true;
 	bool invalidInput = false;
 	bool closeGame = true;
-	//Betting loop is how much you want to insert in a loop. If you dont have enough money and dont want to insert more it quits.
+	//Betting loop is how much you want to insert into balance in a loop. If you dont have enough money and dont want to insert more it quits.
 	bool betting = true;
 
 	srand(time(NULL));
@@ -28,15 +28,24 @@ int main()
 	cout << "Welcome To Valen's Dice game!" << endl;
 
 	while (betting) {
-		cout << "Type in your wishing Balance. (Max 5000): "; cin >> balance;
+		cout << "Type in your wishing Balance. (Max 5000): ";
 
 		//This wish2Continue is set to true if the player want to play again but dont have enough money and have to insert more.
 		wish2Continue = true;
 
-		if (balance < 0 || balance > 5001) {
-			cout << "Invalid amount";
-			wish2Continue = false;
+		//This while loop checks every character in balance input to see if its a number. If its not a number it returns a string to the user and asked to type in again.
+		while (!(cin >> balance) || cin.peek() != '\n') {
+			cout << "Incorrect integer, only accept int. Try again: ";
+			cin.clear();
+			cin.ignore(1000, '\n');
+		}
 
+
+		if (balance < 0 || balance > 5001) {
+			cout << "Invalid amount" << endl;
+			cin.clear();
+			cin.ignore(1000, '\n');
+			wish2Continue = false;
 		}
 
 		while (wish2Continue) {
@@ -73,9 +82,7 @@ int main()
 			int score = 0;
 			int computerScore = 0;
 
-
 			while (diceGame) {
-
 				// Rest of 6 
 				int humanDice1 = 1 + (rand() % 6);
 				int humanDice2 = 1 + (rand() % 6);
@@ -85,11 +92,9 @@ int main()
 				cout << "This is both dices for human: " << humanDice1 << " & " << humanDice2 << endl;
 
 				if (humanDice1 > humanDice2) {
-
 					//The first dice is the better one
 					bestHumanDice = humanDice1;
 					cout << "Your best dice is: " << bestHumanDice << endl << endl;
-
 				}
 				else if (humanDice1 < humanDice2) {
 					//The second dice is the better one
@@ -157,7 +162,6 @@ int main()
 				}
 			}
 
-
 			if (!invalidInput) {
 				cout << "-----------------------------------" << endl;
 
@@ -180,7 +184,6 @@ int main()
 
 			}
 
-
 			//IF the player want to play again but has less the lowest bet, the user will be questioned to add more to balance
 			if (balance < 100) {
 				cout << "Your balance is: " << balance << "\nYou don't have enough money to play again.\nDo you wanna add money? Yes(Y) or No(N)" << endl;
@@ -194,9 +197,7 @@ int main()
 					betting = false;
 					wish2Continue = false;
 				}
-
 			}
-
 		}
 	}
 }
