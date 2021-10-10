@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
 	//Declaring as many variables in the start to improve readability
-	int balance;
+	int playerBalance;
 	int bet{};
 	int bestHumanDice;
 	int bestComputerDice;
@@ -21,27 +21,26 @@ int main()
 	bool invalidInput = false;
 	bool closeGame = true;
 	//Betting loop is how much you want to insert into balance in a loop. If you dont have enough money and dont want to insert more it quits.
-	bool betting = true;
+	bool bettingLoop = true;
 
 	srand(time(NULL));
 
 	cout << "Welcome To Valen's Dice game!" << endl;
 
-	while (betting) {
+	while (bettingLoop) {
 		cout << "Type in your wishing Balance. (Max 5000): ";
 
-		//This wish2Continue is set to true if the player want to play again but dont have enough money and have to insert more.
+		//This wish2Continue is set to true if the player want to play again but dont have enough money and have to insert more. See row 204
 		wish2Continue = true;
 
 		//This while loop checks every character in balance input to see if its a number. If its not a number it returns a string to the user and asked to type in again.
-		while (!(cin >> balance) || cin.peek() != '\n') {
-			cout << "Incorrect integer, only accept int. Try again: ";
+		while (!(cin >> playerBalance) || cin.peek() != '\n') {
+			cout << "Incorrect value, only accept numbers. Try again: ";
 			cin.clear();
 			cin.ignore(1000, '\n');
 		}
 
-
-		if (balance < 0 || balance > 5001) {
+		if (playerBalance < 0 || playerBalance > 5001) {
 			cout << "Invalid amount" << endl;
 			cin.clear();
 			cin.ignore(1000, '\n');
@@ -50,26 +49,37 @@ int main()
 
 		while (wish2Continue) {
 			//The user can only bet 100, 300 or 500 kr. Therefore there's 3 options only.
-			cout << "How much do you want to bet?" << endl << "1. 100 kr" << endl << "2. 300 kr" << endl << "3. 500 kr?" << endl; cin >> bet;
+			cout << "How much do you want to bet?" << endl << "1. 100 kr" << endl << "2. 300 kr" << endl << "3. 500 kr?" << endl << "4. Quit the game" << endl;;
 
 			//diceGame is true just because if you insert wrong input u will not go into an infinite loop
 			diceGame = true;
 
-			// This if checks how much the bet will be and if  the user has enough balance. 
-			if (bet == 1 && balance >= 100) {
+			//This checks if the user input correct.
+			while (!(cin >> bet) || cin.peek() != '\n') {
+				cout << "Incorrect value, only accept number. Try again: ";
+				cin.clear();
+				cin.ignore(1000, '\n');
+			}
+
+			// This if checks how much the bet will be and if  the user has enough Balance. 
+			if (bet == 1 && playerBalance >= 100) {
 				bet = 100;
-				balance -= bet;
+				playerBalance -= bet;
 				cout << "You bet " << bet << " kr " << endl;
 			}
-			else if (bet == 2 && balance >= 300) {
+			else if (bet == 2 && playerBalance >= 300) {
 				bet = 300;
-				balance -= bet;
+				playerBalance -= bet;
 				cout << "You bet " << bet << " kr " << endl;
 			}
-			else if (bet == 3 && balance >= 500) {
+			else if (bet == 3 && playerBalance >= 500) {
 				bet = 500;
-				balance -= bet;
+				playerBalance -= bet;
 				cout << "You bet " << bet << " kr " << endl;
+			} 
+			else if (bet == 4) {
+				bettingLoop = false;
+				break;
 			}
 			else {
 				cout << "Invalid option or not enough balance" << endl;
@@ -104,7 +114,7 @@ int main()
 				else {
 					//Both dices are the same so therefore we send in the first dice
 					bestHumanDice = humanDice1;
-					cout << "Both dices are the same" << bestHumanDice << endl << endl;
+					cout << "Both dices are the same: " << bestHumanDice << endl << endl;
 				}
 
 				cout << "--------------Computer rolls the dices-----------------" << endl;
@@ -126,7 +136,7 @@ int main()
 				}
 				else {
 					bestComputerDice = computerDice1;
-					cout << "Both dices are the same " << bestComputerDice << endl << endl;
+					cout << "Both dices are the same: " << bestComputerDice << endl << endl;
 				}
 
 				cout << "--------------The battle-----------------" << endl;
@@ -145,23 +155,23 @@ int main()
 				}
 				cout << "The score is now for human: " << score << " The computer score: " << computerScore << endl << endl;
 
-				//If the user wins 2 rounds the balance will add 2x the bet. If the user loses the user loses the bet,
+				//If the user wins 2 rounds the playerBalance will add 2x the bet. If the user loses the user loses the bet,
 				if (score == 2) {
-					balance += bet * 2;
+					playerBalance += bet * 2;
 					totalWinnings += bet;
-					cout << "Nice you won! Your new balance is: " << balance << endl;
+					cout << "Nice you won! Your new balance is: " << playerBalance << endl;
 					humanGameScore++;
 					break;
 				}
 				else if (computerScore == 2) {
 					totalWinnings -= bet;
-					cout << "Oh no! You lost! Your new balance is: " << balance << endl;
+					cout << "Oh no! You lost! Your new balance is: " << playerBalance << endl;
 					computerGameScore++;
 					break;
-
 				}
 			}
 
+			//This if checks if the user has put in 
 			if (!invalidInput) {
 				cout << "-----------------------------------" << endl;
 
@@ -169,24 +179,24 @@ int main()
 
 				//If i put totalwinnings here it will add/remove the bet and even if i say totalwinnings +=/-= bet it will give it x2 because i put balance += (bet * 2)
 				cout << "The total winnings right now is: " << totalWinnings << endl;
-				cout << "Your current balance is: " << balance << endl;
+				cout << "Your current balance is: " << playerBalance << endl;
 
-				cout << "Do you wanna play again (Y)?" << endl; cin >> rematch;
+				cout << "Do you wanna play again (y)?" << endl; cin >> rematch;
 
 				if (rematch == 'Y' || rematch == 'y') {
 					wish2Continue = true;
 				}
 				else {
-					cout << "This is your earnings for today: " << totalWinnings << " Kr " << endl;
-					betting = false;
+					cout << "Thank you for playing " << endl << "This is how much you betting result for today: " << totalWinnings << " Kr " << endl;
+					bettingLoop = false;
 					break;
 				}
 
 			}
 
 			//IF the player want to play again but has less the lowest bet, the user will be questioned to add more to balance
-			if (balance < 100) {
-				cout << "Your balance is: " << balance << "\nYou don't have enough money to play again.\nDo you wanna add money? Yes(Y) or No(N)" << endl;
+			if (playerBalance < 100) {
+				cout << "Your balance is: " << playerBalance << "\nYou don't have enough money to play again.\nDo you wanna add money? Yes(Y) or No(N)" << endl;
 				cin >> addYesNo;
 
 				if (addYesNo == 'Y' || addYesNo == 'y') {
@@ -194,7 +204,8 @@ int main()
 					wish2Continue = false;
 				}
 				else {
-					betting = false;
+					cout << "Thank you for playing " << endl << "This is how much you betting result for today: " << totalWinnings << " Kr " << endl;
+					bettingLoop = false;
 					wish2Continue = false;
 				}
 			}
